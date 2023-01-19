@@ -1,0 +1,25 @@
+version: 3
+
+vars:
+  COMMIT_HASH: { sh: git log -n1 --format=%h }
+  DATE: '{{now | date "2006-01-02T15:04:05Z07:00"}}'
+
+tasks:
+  docker-run:
+    internal: true
+    set: [e,u,pipefail]
+    cmds:
+      - docker run -it {{.RM}} {{.PWD_MOUNT}} {{.IMAGE}} {{.CMD}}
+    vars:
+      PWD_MOUNT: '{{ternary "-v $PWD:$PWD -w $PWD" "" (eq (default "true" .PWD_MOUNT) "true")}}'
+      RM: '{{ternary "--rm" "" (eq (default "true" .RM) "true")}}'
+
+  docker-build:
+    internal: true
+    run: when_changed
+    set: [e,u,pipefail]
+    cmds:
+      - cd {{.DIR}} && docker build --file {{.DOCKER_FILE}} -t {{.DOCKER_IMAGE}} .
+    vars:
+      DOCKER_FILE: '{{default "Dockerfile" .DOCKER_FILE}}'
+      DIR: '{{default "." .DIR}}'
