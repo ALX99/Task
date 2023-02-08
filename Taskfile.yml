@@ -39,7 +39,7 @@ tasks:
     run: when_changed
     set: [e,u,pipefail]
     cmds:
-      - cd {{.DIR}} && docker build --file {{.DOCKER_FILE}} -t {{.DOCKER_IMAGE}} .
+      - cd {{.DIR}} && docker build --file {{.DOCKER_FILE}} -t {{.IMAGE_NAME}} .
     vars:
       DOCKER_FILE: '{{default "Dockerfile" .DOCKER_FILE}}'
       DIR: '{{default "." .DIR}}'
