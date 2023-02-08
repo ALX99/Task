@@ -5,6 +5,26 @@ vars:
   DATE: '{{now | date "2006-01-02T15:04:05Z07:00"}}'
 
 tasks:
+  lint:shell:
+    set: [e,u,pipefail]
+    status:
+      - test -z "{{.SHELL_FILES}}"
+    cmds:
+      - task: docker-run
+        vars:
+          IMAGE: koalaman/shellcheck:stable
+          PWD_MOUNT: true
+          CMD: -x {{.SHELL_FILES}}
+    vars:
+      SHELL_FILES:
+        sh: >
+          bash -c "while read -r f; do
+            [[ -d \$f ]] && continue;
+            if head -n1 \"\$f\" | grep -Eq '^#!(.*/|.*env +)(sh|bash|ksh)'; then
+              printf \"\$f \";
+            fi;
+          done< <(git ls-files)"
+
   docker-run:
     internal: true
     set: [e,u,pipefail]
