@@ -25,7 +25,7 @@ tasks:
             fi;
           done< <(git ls-files)"
 
-  docker-run:
+  docker:run:
     internal: true
     set: [e,u,pipefail]
     cmds:
@@ -34,7 +34,7 @@ tasks:
       PWD_MOUNT: '{{ternary "-v $PWD:$PWD -w $PWD" "" (eq (default "true" .PWD_MOUNT) "true")}}'
       RM: '{{ternary "--rm" "" (eq (default "true" .RM) "true")}}'
 
-  docker-build:
+  docker:build:
     internal: true
     run: when_changed
     set: [e,u,pipefail]
