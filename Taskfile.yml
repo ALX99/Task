@@ -24,6 +24,13 @@ tasks:
             fi;
           done< <(git ls-files)"
 
+  lint:go:
+    cmds:
+      - task: docker:run
+        vars:
+          IMAGE: golangci/golangci-lint:latest
+          CMD: golangci-lint run ./...
+
   docker:run:
     internal: true
     set: [e,u,pipefail]
