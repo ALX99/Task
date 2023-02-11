@@ -10,7 +10,7 @@ tasks:
     status:
       - test -z "{{.SHELL_FILES}}"
     cmds:
-      - task: docker-run
+      - task: docker:run
         vars:
           IMAGE: koalaman/shellcheck:stable
           PWD_MOUNT: true
