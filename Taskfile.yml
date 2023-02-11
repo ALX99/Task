@@ -13,7 +13,6 @@ tasks:
       - task: docker:run
         vars:
           IMAGE: koalaman/shellcheck:stable
-          PWD_MOUNT: true
           CMD: -x {{.SHELL_FILES}}
     vars:
       SHELL_FILES:
