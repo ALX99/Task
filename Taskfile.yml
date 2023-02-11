@@ -29,7 +29,7 @@ tasks:
     internal: true
     set: [e,u,pipefail]
     cmds:
-      - docker run -it {{.RM}} {{.PWD_MOUNT}} {{.IMAGE}} {{.CMD}}
+      - docker run -t {{.RM}} {{.PWD_MOUNT}} {{.IMAGE}} {{.CMD}}
     vars:
       PWD_MOUNT: '{{ternary "-v $PWD:$PWD -w $PWD" "" (eq (default "true" .PWD_MOUNT) "true")}}'
       RM: '{{ternary "--rm" "" (eq (default "true" .RM) "true")}}'
